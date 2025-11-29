@@ -24,4 +24,5 @@ export const markTabletAsTaken = async (payload) => {
       headers: { Authorization: `Bearer ${token}` }
     });
   };
+export const updateMedicationStock = (medicationId, data) => API.put(`/medication/${medicationId}/stock`, data);
   

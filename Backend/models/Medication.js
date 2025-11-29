@@ -16,6 +16,9 @@ const medicationSchema = new mongoose.Schema({
       time: String, // 'HH:MM'
     },
   ],
+  stockQuantity: { type: Number, default: 0 }, // Current stock count
+  tabletsPerDose: { type: Number, default: 1 }, // Number of tablets per dose
+  estimatedRefillDate: { type: Date }, // Calculated refill date
 });
 
 module.exports = mongoose.model('Medication', medicationSchema);

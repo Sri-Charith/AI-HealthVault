@@ -47,6 +47,7 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/medication', medicationRoutes);
 app.use('/api/menstruation', menstruationRoutes);
 app.use('/api/fitness', fitnessRoutes);
+console.log('✅ Fitness routes registered at /api/fitness');
 // DB connection
 
 mongoose.connect(process.env.MONGO_URI, {
