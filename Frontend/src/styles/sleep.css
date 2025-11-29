@@ -1,0 +1,106 @@
+/* Sleep Page Styles */
+.sleep-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 15px;
+  }
+  
+  .sleep-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+  }
+  
+  .page-title {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+  }
+  
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #4a5568;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  
+  .form-control:focus {
+    outline: none;
+    border-color: #48bb78;
+    box-shadow: 0 0 0 2px rgba(72, 187, 120, 0.2);
+  }
+  
+  .time-inputs {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  @media (min-width: 768px) {
+    .time-inputs {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  .time-group {
+    background: #f7fafc;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  
+  .checkbox-group {
+    margin: 1.5rem 0;
+    display: flex;
+    align-items: center;
+  }
+  
+  .checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #4a5568;
+  }
+  
+  .checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #48bb78;
+  }
+  
+  .save-button {
+    width: 100%;
+    padding: 1rem;
+    background-color: #48bb78;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .save-button:hover {
+    background-color: #38a169;
+    transform: translateY(-1px);
+  }
+  
+  .save-button:active {
+    transform: translateY(0);
+  }

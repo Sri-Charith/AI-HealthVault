@@ -1,0 +1,182 @@
+/* Base Reset */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #e8f5e9;
+    color: #333;
+  }
+  
+  /* Hero */
+  .hero {
+    background: url('../assets/health_tracking.png') center/cover no-repeat;
+    height: 45vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .hero .overlay {
+    background-color: rgba(0, 100, 0, 0.5);
+    padding: 30px;
+    border-radius: 12px;
+    color: white;
+    width: 100%;
+    max-width: 600px;
+  }
+  
+  .cta {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 8px;
+  }
+  
+  /* Section */
+  .section {
+    padding: 40px 20px;
+    text-align: center;
+  }
+  
+  .section-title {
+    font-size: 28px;
+    color: #2e7d32;
+    margin-bottom: 30px;
+  }
+  
+  /* Cards */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 20px;
+    max-width: 1100px;
+    margin: auto;
+    padding: 0 10px;
+  }
+  
+  .card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 20px;
+    transition: transform 0.3s ease;
+    text-align: center;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  
+  /* Why Choose */
+  .why {
+    background: #f1f8e9;
+    padding: 60px 20px;
+    text-align: center;
+  }
+  
+  .why .highlight {
+    color: #388e3c;
+  }
+  
+  .benefits {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 20px;
+  }
+  
+  .benefits div {
+    min-width: 200px;
+    font-size: 16px;
+    background: #dcedc8;
+    padding: 10px 20px;
+    border-radius: 8px;
+  }
+  
+  /* Testimonials */
+  .testimonials {
+    background: #ffffff;
+    padding: 50px 20px;
+    text-align: center;
+  }
+  
+  .testimonial-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .testimonial {
+    background: #e0f2f1;
+    padding: 20px;
+    border-radius: 12px;
+    max-width: 320px;
+    width: 100%;
+  }
+  
+  /* Footer */
+  footer {
+    background: #2e7d32;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 14px;
+  }
+  
+  .socials {
+    margin-top: 10px;
+  }
+  
+  .socials a {
+    margin: 0 10px;
+    color: white;
+    font-size: 18px;
+    transition: color 0.3s ease;
+  }
+  
+  .socials a:hover {
+    color: #c8e6c9;
+  }
+  
+  /* 🔽 Mobile Styles */
+  @media screen and (max-width: 768px) {
+    .hero {
+      height: 80vh;
+      padding: 10px;
+    }
+  
+    .hero .overlay {
+      padding: 20px;
+    }
+  
+    .section-title {
+      font-size: 24px;
+    }
+  
+    .card {
+      padding: 15px;
+    }
+  
+    .benefits {
+      flex-direction: column;
+      gap: 15px;
+    }
+  
+    .testimonial-grid {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    footer {
+      font-size: 13px;
+    }
+  }
+  

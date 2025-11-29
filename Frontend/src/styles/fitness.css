@@ -1,0 +1,45 @@
+/* Fitness Tracker Styles */
+.chart-container {
+    min-width: 300px;
+  }
+  
+  .form-control-lg {
+    font-size: 1.1rem;
+    padding: 0.75rem 1.25rem;
+  }
+  
+  .alert {
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+  
+  .card {
+    border-radius: 15px;
+    border: none;
+    transition: transform 0.2s;
+  }
+  
+  .card:hover {
+    transform: translateY(-2px);
+  }
+  
+  .form-check-input:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+  }
+  
+  .btn {
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+  }
+  
+  @media (max-width: 768px) {
+    .chart-container {
+      min-height: 250px !important;
+    }
+    
+    .form-control-lg {
+      font-size: 1rem;
+    }
+  }
