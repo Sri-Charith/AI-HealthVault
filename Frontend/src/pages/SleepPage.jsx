@@ -9,6 +9,8 @@ export default function SleepPage() {
   const [sleepTime, setSleepTime] = useState('22:00');
   const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
   const [applyToMonth, setApplyToMonth] = useState(false);
+  const [aiRecommendations, setAiRecommendations] = useState('');
+  const [loadingAI, setLoadingAI] = useState(false);
   const token = localStorage.getItem('token');
 
   // Fetch existing sleep data when date changes
@@ -27,7 +29,24 @@ export default function SleepPage() {
     };
 
     fetchSleepData();
+    fetchAIRecommendations();
   }, [date, token]);
+
+  const fetchAIRecommendations = async () => {
+    if (!token) return;
+    setLoadingAI(true);
+    try {
+      const res = await axios.get(`http://localhost:5000/api/ai-recommendations/sleep?date=${date}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setAiRecommendations(res.data.recommendations || '');
+    } catch (err) {
+      console.error('Error fetching AI recommendations:', err);
+      setAiRecommendations('');
+    } finally {
+      setLoadingAI(false);
+    }
+  };
 
   const handleSave = async () => {
     try {
@@ -47,6 +66,7 @@ export default function SleepPage() {
         closeOnClick: true,
         pauseOnHover: true,
       });
+      fetchAIRecommendations(); // Refresh AI recommendations
     } catch (err) {
       toast.error('Failed to save sleep schedule', {
         position: "top-center"
@@ -109,6 +129,36 @@ export default function SleepPage() {
         >
           💾 Save Schedule
         </button>
+      </div>
+
+      {/* AI Recommendations Card */}
+      <div className="card sleep-card mt-4" style={{ border: '2px solid #4299e1' }}>
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <h3 className="page-title mb-0" style={{ fontSize: '1.5rem' }}>🤖 AI Recommendations</h3>
+          <button
+            className="btn btn-sm btn-outline-primary"
+            onClick={fetchAIRecommendations}
+            disabled={loadingAI}
+          >
+            {loadingAI ? '🔄 Loading...' : '🔄 Refresh'}
+          </button>
+        </div>
+        {loadingAI ? (
+          <div className="text-center py-3">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <p className="mt-2 text-muted">Getting AI recommendations...</p>
+          </div>
+        ) : aiRecommendations ? (
+          <div className="alert alert-info mb-0">
+            <div style={{ whiteSpace: 'pre-wrap' }}>{aiRecommendations}</div>
+          </div>
+        ) : (
+          <div className="text-center text-muted py-3">
+            <p>Click refresh to get personalized AI recommendations based on your sleep data!</p>
+          </div>
+        )}
       </div>
     </div>
   );

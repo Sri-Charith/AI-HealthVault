@@ -45,6 +45,8 @@ const FitnessTracker = () => {
   const [exerciseSets, setExerciseSets] = useState([{ reps: 10, weight: 0, restTime: 60 }]);
   const [exerciseNotes, setExerciseNotes] = useState('');
   const [editingExercise, setEditingExercise] = useState(null);
+  const [aiRecommendations, setAiRecommendations] = useState('');
+  const [loadingAI, setLoadingAI] = useState(false);
   const token = localStorage.getItem('token');
 
   // Common exercises by category
@@ -124,7 +126,24 @@ const FitnessTracker = () => {
   useEffect(() => {
     fetchToday();
     fetchMonthly();
+    fetchAIRecommendations();
   }, [selectedDate]);
+
+  const fetchAIRecommendations = async () => {
+    if (!token) return;
+    setLoadingAI(true);
+    try {
+      const res = await axios.get(`http://localhost:5000/api/ai-recommendations/fitness?date=${selectedDate}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setAiRecommendations(res.data.recommendations || '');
+    } catch (err) {
+      console.error('Error fetching AI recommendations:', err);
+      setAiRecommendations('');
+    } finally {
+      setLoadingAI(false);
+    }
+  };
 
   const setWorkoutTypeHandler = async (type) => {
     if (!token) {
@@ -145,6 +164,7 @@ const FitnessTracker = () => {
       );
       setWorkoutType(type);
       fetchToday();
+      fetchAIRecommendations(); // Refresh AI recommendations
       toast.success(`Workout type set to ${type.toUpperCase()}`);
     } catch (error) {
       console.error('Error setting workout type:', error);
@@ -254,6 +274,7 @@ const FitnessTracker = () => {
       resetExerciseForm();
       fetchToday();
       fetchMonthly(); // Refresh monthly data for charts
+      fetchAIRecommendations(); // Refresh AI recommendations
     } catch (error) {
       console.error('Error saving exercise:', error);
       console.error('Error response:', error.response);
@@ -998,6 +1019,38 @@ const FitnessTracker = () => {
             </div>
           </div>
         )}
+
+        {/* AI Recommendations Card */}
+        <div className="col-12">
+          <div className="card shadow-sm p-4 border-primary">
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <h4 className="mb-0 text-primary fw-bold">🤖 AI Fitness Recommendations</h4>
+              <button
+                className="btn btn-sm btn-outline-primary"
+                onClick={fetchAIRecommendations}
+                disabled={loadingAI}
+              >
+                {loadingAI ? '🔄 Loading...' : '🔄 Refresh'}
+              </button>
+            </div>
+            {loadingAI ? (
+              <div className="text-center py-3">
+                <div className="spinner-border text-primary" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+                <p className="mt-2 text-muted">Getting AI recommendations...</p>
+              </div>
+            ) : aiRecommendations ? (
+              <div className="alert alert-info mb-0">
+                <div style={{ whiteSpace: 'pre-wrap' }}>{aiRecommendations}</div>
+              </div>
+            ) : (
+              <div className="text-center text-muted py-3">
+                <p>Click refresh to get personalized AI recommendations based on your fitness data!</p>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

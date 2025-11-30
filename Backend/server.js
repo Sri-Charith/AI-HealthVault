@@ -14,6 +14,7 @@ const notificationRoutes = require('./routes/notifications');
 const medicationRoutes = require('./routes/medication');
 const menstruationRoutes = require('./routes/menstruation');
 const fitnessRoutes = require('./routes/fitness');
+const aiRecommendationsRoutes = require('./routes/aiRecommendations');
 dotenv.config();
 
 const app = express();
@@ -47,7 +48,9 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/medication', medicationRoutes);
 app.use('/api/menstruation', menstruationRoutes);
 app.use('/api/fitness', fitnessRoutes);
+app.use('/api/ai-recommendations', aiRecommendationsRoutes);
 console.log('✅ Fitness routes registered at /api/fitness');
+console.log('✅ AI Recommendations routes registered at /api/ai-recommendations');
 // DB connection
 
 mongoose.connect(process.env.MONGO_URI, {

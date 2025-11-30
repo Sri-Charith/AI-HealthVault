@@ -27,7 +27,7 @@ const fitnessSchema = new mongoose.Schema({
   workoutType: { 
     type: String, 
     enum: ['push', 'pull', 'legs', 'rest', 'cardio', 'full-body'],
-    default: null 
+    default: 'cardio' 
   },
   exercises: [exerciseSchema],
   totalVolume: { type: Number, default: 0 }, // Total weight lifted (sum of sets * reps * weight)

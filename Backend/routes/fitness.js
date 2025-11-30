@@ -71,23 +71,6 @@ router.post('/update', auth, async (req, res) => {
   }
 });
 
-// // Set target (can set fixed for month)
-// router.post('/set-target', auth, async (req, res) => {
-//     const { target, fixedMonthly } = req.body;
-//     console.log('Target:', target, 'Fixed Monthly:', fixedMonthly);
-//     console.log('USER:', req.user); // 🧪 Test here
-//   const today = moment().format('YYYY-MM-DD');
-
-//   let data = await Fitness.findOne({ userId: req.user._id, date: today });
-//   if (!data) {
-//     data = await Fitness.create({ userId: req.user._id, date: today, target, fixedMonthly });
-//   } else {
-//     data.target = target;
-//     data.fixedMonthly = fixedMonthly;
-//     await data.save();
-//   }
-//   res.json(data);
-// });
 router.post('/set-target', auth, async (req, res) => {
   try {
       const { target, useForMonth, date } = req.body;

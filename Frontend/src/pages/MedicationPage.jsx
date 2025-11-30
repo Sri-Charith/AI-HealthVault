@@ -5,6 +5,7 @@ import {
   markTabletAsTaken,
   updateMedicationStock
 } from '../utils/api';
+import axios from 'axios';
 import "../styles/medication.css";
 import { FaPills, FaClock, FaCheckCircle, FaPlus, FaTrash, FaEdit } from 'react-icons/fa';
 import toast from 'react-hot-toast';
@@ -26,6 +27,9 @@ const MedicationPage = () => {
   const [frequency, setFrequency] = useState('Daily');
   const [stockQuantity, setStockQuantity] = useState('');
   const [tabletsPerDose, setTabletsPerDose] = useState('1');
+  const [aiRecommendations, setAiRecommendations] = useState('');
+  const [loadingAI, setLoadingAI] = useState(false);
+  const token = localStorage.getItem('token');
 
   const loadMedications = async () => {
     try {
@@ -38,7 +42,24 @@ const MedicationPage = () => {
 
   useEffect(() => {
     loadMedications();
+    fetchAIRecommendations();
   }, []);
+
+  const fetchAIRecommendations = async () => {
+    if (!token) return;
+    setLoadingAI(true);
+    try {
+      const res = await axios.get('http://localhost:5000/api/ai-recommendations/medication', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setAiRecommendations(res.data.recommendations || '');
+    } catch (err) {
+      console.error('Error fetching AI recommendations:', err);
+      setAiRecommendations('');
+    } finally {
+      setLoadingAI(false);
+    }
+  };
 
   const formatDate = (date) => date.toISOString().split('T')[0];
   const todayStr = formatDate(selectedDate);
@@ -80,6 +101,7 @@ const MedicationPage = () => {
       setStockQuantity('');
       setTabletsPerDose('1');
       loadMedications();
+      fetchAIRecommendations(); // Refresh AI recommendations
     } catch (err) {
       toast.error("Failed to add medication");
     }
@@ -110,6 +132,7 @@ const MedicationPage = () => {
       toast.success("Stock updated successfully!");
       setEditingStock(null);
       loadMedications();
+      fetchAIRecommendations(); // Refresh AI recommendations
     } catch (err) {
       toast.error("Error updating stock");
     }
@@ -411,6 +434,40 @@ const MedicationPage = () => {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* AI Recommendations Card */}
+      <div className="card shadow-lg border-primary mt-5">
+        <div className="card-header bg-primary text-white">
+          <div className="d-flex justify-content-between align-items-center">
+            <h5 className="mb-0">🤖 AI Medication Recommendations</h5>
+            <button
+              className="btn btn-light btn-sm"
+              onClick={fetchAIRecommendations}
+              disabled={loadingAI}
+            >
+              {loadingAI ? '🔄 Loading...' : '🔄 Refresh'}
+            </button>
+          </div>
+        </div>
+        <div className="card-body">
+          {loadingAI ? (
+            <div className="text-center py-3">
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+              <p className="mt-2 text-muted">Getting AI recommendations...</p>
+            </div>
+          ) : aiRecommendations ? (
+            <div className="alert alert-info mb-0">
+              <div style={{ whiteSpace: 'pre-wrap' }}>{aiRecommendations}</div>
+            </div>
+          ) : (
+            <div className="text-center text-muted py-3">
+              <p>Click refresh to get personalized AI recommendations based on your medication data!</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -13,6 +13,8 @@ const Diet = () => {
   const [remaining, setRemaining] = useState(0);
   const [message, setMessage] = useState('');
   const [setForMonth, setSetForMonth] = useState(false);
+  const [aiRecommendations, setAiRecommendations] = useState('');
+  const [loadingAI, setLoadingAI] = useState(false);
 
   const token = localStorage.getItem('token');
 
@@ -41,7 +43,24 @@ const Diet = () => {
 
   useEffect(() => {
     fetchFoodLog();
+    fetchAIRecommendations();
   }, [selectedDate]);
+
+  const fetchAIRecommendations = async () => {
+    if (!token) return;
+    setLoadingAI(true);
+    try {
+      const res = await axios.get(`http://localhost:5000/api/ai-recommendations/diet?date=${selectedDate}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setAiRecommendations(res.data.recommendations || '');
+    } catch (err) {
+      console.error('Error fetching AI recommendations:', err);
+      setAiRecommendations('');
+    } finally {
+      setLoadingAI(false);
+    }
+  };
 
   const handleAddFood = async (e) => {
     e.preventDefault();
@@ -58,6 +77,7 @@ const Diet = () => {
       setFoodItem('');
       toast.success('Food item added successfully!');
       fetchFoodLog();
+      fetchAIRecommendations(); // Refresh AI recommendations
     } catch (err) {
       console.error('Error adding food:', err);
     }
@@ -77,6 +97,7 @@ const Diet = () => {
       toast.success('Daily target set successfully!');
       setSetForMonth(false);
       fetchFoodLog();
+      fetchAIRecommendations(); // Refresh AI recommendations
     } catch (err) {
       console.error('Error setting target:', err);
     }
@@ -224,6 +245,36 @@ const Diet = () => {
           </div>
         </div>
       )}
+
+      {/* AI Recommendations Card */}
+      <div className="card p-3 p-md-4 shadow-lg mt-4 border-primary">
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <h4 className="mb-0">🤖 AI Recommendations</h4>
+          <button
+            className="btn btn-sm btn-outline-primary"
+            onClick={fetchAIRecommendations}
+            disabled={loadingAI}
+          >
+            {loadingAI ? '🔄 Loading...' : '🔄 Refresh'}
+          </button>
+        </div>
+        {loadingAI ? (
+          <div className="text-center py-3">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <p className="mt-2 text-muted">Getting AI recommendations...</p>
+          </div>
+        ) : aiRecommendations ? (
+          <div className="alert alert-info mb-0">
+            <div style={{ whiteSpace: 'pre-wrap' }}>{aiRecommendations}</div>
+          </div>
+        ) : (
+          <div className="text-center text-muted py-3">
+            <p>Click refresh to get personalized AI recommendations based on your diet data!</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
